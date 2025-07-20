@@ -18,10 +18,13 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 // custom routing
 func pathHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/" {
+	switch r.URL.Path {
+	case "/":
 		homeHandler(w, r)
-	} else if r.URL.Path == "/contact" {
+	case "/contact":
 		contactHandler(w, r)
+	default:
+		//	TODO: handle page not found error
 	}
 
 }
