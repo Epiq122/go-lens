@@ -18,9 +18,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 // custom routing
 
-type Router struct{}
-
-func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func pathHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 	case "/":
 		homeHandler(w, r)
@@ -32,8 +30,22 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 }
 
+type Router struct{}
+
+func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	switch r.URL.Path {
+	case "/":
+		homeHandler(w, r)
+	case "/contact":
+		contactHandler(w, r)
+	default:
+		http.Error(w, "Page not found", http.StatusNotFound)
+	}
+}
+
 func main() {
-	var router Router
+	//var router http.HandlerFunc
+	//router = pathHandler
 	fmt.Println("starting the server on :3000...")
-	http.ListenAndServe(":3000", router)
+	http.ListenAndServe(":3000", http.HandlerFunc(pathHandler))
 }
