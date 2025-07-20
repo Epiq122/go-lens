@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func handlerFunc(w http.ResponseWriter, r *http.Request) {
+func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprint(w, "<h1> Welcome to my nightmare </h1>")
 }
@@ -16,8 +16,13 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// custom routing
 func pathHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, r.URL.Path)
+	if r.URL.Path == "/" {
+		homeHandler(w, r)
+	} else if r.URL.Path == "/contact" {
+		contactHandler(w, r)
+	}
 
 }
 
